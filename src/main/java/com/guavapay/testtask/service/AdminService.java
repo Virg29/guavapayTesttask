@@ -8,13 +8,13 @@ import java.util.UUID;
 
 public interface AdminService {
 
-    List<Admin> getAllUsers();
+    List<Admin> getAllAdmins();
 
-    Admin getUserById(UUID id);
+    Admin getAdminById(UUID id);
 
-    Admin createUser(Admin user);
+    Admin createAdmin(Admin user);
 
-    Admin updateUser(UUID id, Admin user);
+    Admin updateAdmin(UUID id, Admin user);
 
-    void deleteUser(UUID id);
+    void deleteAdmin(UUID id);
 }

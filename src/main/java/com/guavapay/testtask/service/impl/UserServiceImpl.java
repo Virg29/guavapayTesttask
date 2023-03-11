@@ -15,35 +15,35 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository repository;
 
     @Override
     public void deleteUser(UUID id) {
-        userRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public User getUserById(UUID id) {
-        return userRepository.findById(id).orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public User createUser(User user) {
-        return userRepository.save(user);
+        return repository.save(user);
     }
 
     @Override
     public User updateUser(UUID id, User user) {
-        User existingUser = userRepository.findById(id).orElse(null);
+        User existingUser = repository.findById(id).orElse(null);
         if (existingUser != null) {
             existingUser.setLogin(user.getLogin());
             existingUser.setPassword(user.getPassword());
-            return userRepository.save(existingUser);
+            return repository.save(existingUser);
         }
         return null;
     }
