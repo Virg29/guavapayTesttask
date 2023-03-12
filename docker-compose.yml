@@ -14,11 +14,11 @@ services:
       - 80:80
       - 433:433
     environment:
-      psqlHost: $TG_TOKEN
-      psqlPort: $TG_CHAT_ID
-      psqlDB: $TG_SEND_INTERVAL
-      psqlUsername: $TG_SEND_DISP
-      psqlPassword: $API_KEY
+      psqlHost: $psqlHost
+      psqlPort: $psqlPort
+      psqlDB: $postgresDb
+      psqlUsername: $postgresUser
+      psqlPassword: $postgresPassword
     depends_on:
       postgres:
         condition: service_started
