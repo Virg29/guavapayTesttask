@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
+@Table(name = "parcels")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

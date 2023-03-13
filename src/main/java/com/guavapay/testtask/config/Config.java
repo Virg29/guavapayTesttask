@@ -1,8 +1,11 @@
-package com.guavapay.testtask;
+package com.guavapay.testtask.config;
 
+import com.guavapay.testtask.security.jwt.JwtTokenProvider;
+import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -17,7 +20,7 @@ public class Config {
         String host = System.getenv("psqlHost")!=null?System.getenv("psqlHost"):"127.0.0.1";
         String port = System.getenv("psqlPort")!=null?System.getenv("psqlPort"):"5432";
         String db = System.getenv("psqlDB")!=null?System.getenv("psqlDB"):"app";
-        String username = System.getenv("psqlUsername")!=null?System.getenv("psqlUsername"):"login";
+        String username = System.getenv("psqlUsername")!=null?System.getenv("psqlUsername"):"user";
         String password = System.getenv("psqlPassword")!=null?System.getenv("psqlPassword"):"password";
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -30,6 +33,22 @@ public class Config {
     }
 
     @Bean
+    public SpringLiquibase liquibase() {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setChangeLog("classpath:liquibase/db.changelog-master.xml");
+        liquibase.setDataSource(dataSource());
+        return liquibase;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoderBean(){
+        return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public JwtTokenProvider jwtTokenProviderBean(){
+        return new JwtTokenProvider();
+    }
+    @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
@@ -37,4 +56,5 @@ public class Config {
                 .paths(PathSelectors.any())
                 .build();
     }
+
 }

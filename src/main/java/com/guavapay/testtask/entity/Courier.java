@@ -3,25 +3,19 @@ package com.guavapay.testtask.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
+@Table(name = "couriers")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Courier {
-
-    @Id
-    @GeneratedValue
-    private UUID id;
-
-    private String login;
-
-    private String password;
-
+@RequiredArgsConstructor
+//@AllArgsConstructor
+public class Courier extends BaseUser {
 
 }

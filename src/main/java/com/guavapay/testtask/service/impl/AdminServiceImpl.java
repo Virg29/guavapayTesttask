@@ -4,6 +4,7 @@ import com.guavapay.testtask.entity.Admin;
 import com.guavapay.testtask.repository.AdminRepository;
 import com.guavapay.testtask.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private AdminRepository repository;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     @Override
     public void deleteAdmin(UUID id) {
         repository.deleteById(id);

@@ -1,0 +1,81 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="create_tables" author="Virg29">
+
+        <createTable tableName="users">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="login" type="VARCHAR(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="parcels">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="daddress" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="uuid">
+                <constraints nullable="true"/>
+            </column>
+            <column name="courier_id" type="uuid">
+                <constraints nullable="true"/>
+            </column>
+            <column name="lat" type="float">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lng" type="float">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(255)" defaultValue="WAITING">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="admins">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="login" type="VARCHAR(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="couriers">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="login" type="VARCHAR(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="create_foreign_keys" author="Virg29">
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="parcels"
+                                 constraintName="parcels_user_fk"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="courier_id"
+                                 baseTableName="parcels"
+                                 constraintName="parcels_courier_fk"
+                                 referencedColumnNames="id"
+                                 referencedTableName="couriers"/>
+    </changeSet>
+</databaseChangeLog>
