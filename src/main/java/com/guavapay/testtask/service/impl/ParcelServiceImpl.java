@@ -1,6 +1,5 @@
 package com.guavapay.testtask.service.impl;
 
-import com.guavapay.testtask.entity.Courier;
 import com.guavapay.testtask.entity.Parcel;
 import com.guavapay.testtask.repository.ParcelRepository;
 import com.guavapay.testtask.service.ParcelService;

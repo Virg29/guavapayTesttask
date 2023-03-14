@@ -1,5 +1,6 @@
 package com.guavapay.testtask.service.impl;
 
+import com.guavapay.testtask.entity.BaseUser;
 import com.guavapay.testtask.entity.Courier;
 import com.guavapay.testtask.repository.CourierRepository;
 import com.guavapay.testtask.service.CourierService;
@@ -46,5 +47,10 @@ public class CourierServiceImpl implements CourierService {
             return repository.save(existingCourier);
         }
         return null;
+    }
+
+    @Override
+    public BaseUser getBaseUserByLogin(String login) {
+        return repository.findByLogin(login);
     }
 }

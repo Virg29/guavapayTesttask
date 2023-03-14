@@ -7,13 +7,11 @@ import java.util.List;
 import java.util.UUID;
 
 
-public interface UserService {
+public interface UserService extends BaseService{
 
     List<User> getAllUsers();
 
     User getUserById(UUID id);
-
-    User getUserByLogin(String login);
 
     User createUser(User user);
 

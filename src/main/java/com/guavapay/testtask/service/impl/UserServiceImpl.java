@@ -1,15 +1,16 @@
 package com.guavapay.testtask.service.impl;
 
 
-import java.util.List;
-import java.util.UUID;
-
+import com.guavapay.testtask.entity.BaseUser;
 import com.guavapay.testtask.entity.User;
 import com.guavapay.testtask.repository.UserRepository;
 import com.guavapay.testtask.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -36,12 +37,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByLogin(String login) {
-        repository.findByLogin(login);
-        return null;
-    }
-
-    @Override
     public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return repository.save(user);
@@ -56,5 +51,10 @@ public class UserServiceImpl implements UserService {
             return repository.save(existingUser);
         }
         return null;
+    }
+
+    @Override
+    public BaseUser getBaseUserByLogin(String login) {
+        return repository.findByLogin(login);
     }
 }

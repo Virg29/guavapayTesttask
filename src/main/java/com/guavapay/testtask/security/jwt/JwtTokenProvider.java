@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtTokenProvider {
@@ -29,7 +30,9 @@ public class JwtTokenProvider {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
     }
     public String createToken(String username){
+        List<String> roles = this.userDetailsService.loadUserByUsername(username).getAuthorities().stream().map(a->a.getAuthority()).toList();
         Claims claims = Jwts.claims().setSubject(username);
+        claims.put("roles",roles);
         Date now = new Date();
         Date inExpirationTimeout = new Date(now.getTime() + expirationTimeout);
 

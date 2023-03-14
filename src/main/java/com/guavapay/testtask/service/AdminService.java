@@ -1,12 +1,11 @@
 package com.guavapay.testtask.service;
 
 import com.guavapay.testtask.entity.Admin;
-import com.guavapay.testtask.entity.User;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface AdminService {
+public interface AdminService extends BaseService {
 
     List<Admin> getAllAdmins();
 

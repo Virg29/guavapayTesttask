@@ -1,7 +1,6 @@
 package com.guavapay.testtask.repository;
 
 import com.guavapay.testtask.entity.Admin;
-import com.guavapay.testtask.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
