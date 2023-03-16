@@ -2,10 +2,15 @@ package com.guavapay.testtask.config;
 
 import com.guavapay.testtask.security.jwt.JwtTokenProvider;
 import liquibase.integration.spring.SpringLiquibase;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -47,6 +52,22 @@ public class Config {
     @Bean
     public JwtTokenProvider jwtTokenProviderBean(){
         return new JwtTokenProvider();
+    }
+
+    @Bean
+    public CommonsRequestLoggingFilter requestLoggingFilter() {
+        CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
+        loggingFilter.setIncludeClientInfo(true);
+        loggingFilter.setIncludeQueryString(true);
+        loggingFilter.setIncludePayload(true);
+        loggingFilter.setMaxPayloadLength(64000);
+        return loggingFilter;
+    }
+    @Bean
+    @Autowired
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
     @Bean
     public Docket api() {

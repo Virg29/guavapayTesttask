@@ -9,8 +9,13 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @Table(name = "users")
 @Data
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 //@AllArgsConstructor
 public class User extends BaseUser{
+    public User() {
+    }
 
+    public User(String login, String password) {
+        super(login, password);
+    }
 }

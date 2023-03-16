@@ -8,8 +8,13 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @Table(name = "couriers")
 @Data
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 //@AllArgsConstructor
 public class Courier extends BaseUser {
+    public Courier() {
+    }
 
+    public Courier(String login, String password) {
+        super(login, password);
+    }
 }

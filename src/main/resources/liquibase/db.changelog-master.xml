@@ -78,10 +78,4 @@
                                  referencedColumnNames="id"
                                  referencedTableName="couriers"/>
     </changeSet>
-
-    <changeSet id="create_unique_constaints" author="Virg29">
-        <addUniqueConstraint tableName="users" constraintName="login" columnNames="login"/>
-        <addUniqueConstraint tableName="couriers" constraintName="login" columnNames="login"/>
-        <addUniqueConstraint tableName="admins" constraintName="login" columnNames="login"/>
-    </changeSet>
 </databaseChangeLog>
