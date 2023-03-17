@@ -2,6 +2,7 @@ package com.guavapay.testtask;
 
 import com.guavapay.testtask.entity.Admin;
 import com.guavapay.testtask.entity.Courier;
+import com.guavapay.testtask.entity.CourierStatus;
 import com.guavapay.testtask.entity.User;
 import com.guavapay.testtask.service.AdminService;
 import com.guavapay.testtask.service.CourierService;
@@ -51,8 +52,12 @@ public class TesttaskApplication {
 			adminService.createAdmin(new Admin(adminLogin,bCryptPasswordEncoder.encode(adminPassword)));
 		if(userService.getBaseUserByLogin(userLogin)==null)
 			userService.createUser(new User(userLogin,bCryptPasswordEncoder.encode(userPassword)));
-		if(courierService.getBaseUserByLogin(courierLogin)==null)
-			courierService.createCourier(new Courier(courierLogin,bCryptPasswordEncoder.encode(courierPassword)));
+		if(courierService.getBaseUserByLogin(courierLogin)==null){
+			Courier courier = new Courier(courierLogin,bCryptPasswordEncoder.encode(courierPassword));
+			courier.setStatus(CourierStatus.FREE);
+			courierService.createCourier(courier);
+		}
+
 	}
 	public static void main(String[] args) {
 		SpringApplication.run(TesttaskApplication.class, args);

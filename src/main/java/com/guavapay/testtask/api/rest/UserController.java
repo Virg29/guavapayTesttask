@@ -34,6 +34,7 @@ public class UserController{
         User currentUser = (User) userService.getBaseUserByLogin(login);
 
         Parcel parcel = new Parcel(requestDto.getDAddress());
+        parcel.setStatus(ParcelStatus.WAITING);
         parcel.setUser(currentUser);
         parcel.setStatus(ParcelStatus.WAITING);
         Parcel createdParcel = parcelService.createParcel(parcel);
@@ -57,7 +58,7 @@ public class UserController{
 
         parcelService.updateParcel(parcel.getId(),parcel);
 
-        return ResponseEntity.ok(new ChangeDestinationOfParcelResponseDto());
+        return ResponseEntity.ok("");
     }
 
     @PostMapping("/cancelOrder")
@@ -77,7 +78,7 @@ public class UserController{
 
         parcelService.updateParcel(parcel.getId(),parcel);
 
-        return ResponseEntity.ok(new CancelOrderResponseDto());
+        return ResponseEntity.ok("");
     }
 
     @PostMapping("/viewDetails")

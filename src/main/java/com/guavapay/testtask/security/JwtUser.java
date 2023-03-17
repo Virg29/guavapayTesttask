@@ -31,8 +31,6 @@ public class JwtUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        log.info("user %s".formatted(login));
-        log.info("password %s".formatted(password));
         return password;
     }
 

@@ -102,8 +102,9 @@ public class AdminController{
     public ResponseEntity createCourier(@RequestBody CreateCourierRequestDto requestDto){
         String login = requestDto.getLogin();
         String password = requestDto.getPassword();
-
-        courierService.createCourier(new Courier(login,passwordEncoder.encode(password)));
+        Courier courier = new Courier(login,passwordEncoder.encode(password));
+        courier.setStatus(CourierStatus.FREE);
+        courierService.createCourier(courier);
         return ResponseEntity.ok("");
     }
 }
