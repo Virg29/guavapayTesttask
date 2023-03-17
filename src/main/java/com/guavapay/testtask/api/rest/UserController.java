@@ -6,8 +6,8 @@ import com.guavapay.testtask.entity.ParcelStatus;
 import com.guavapay.testtask.entity.User;
 import com.guavapay.testtask.service.ParcelService;
 import com.guavapay.testtask.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/user")
-@Api(tags = {"user"})
+@Tag(name = "user")
 public class UserController{
 
     @Autowired
@@ -27,7 +27,7 @@ public class UserController{
     private UserService userService;
 
     @PostMapping("/createOrder")
-    @ApiOperation(value = "Creates parcel delivery order")
+    @Operation(summary = "Creates parcel delivery order")
     public ResponseEntity createOrder(@RequestBody CreateParcelDeliveryOrderRequestDto requestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -41,7 +41,7 @@ public class UserController{
     }
 
     @PostMapping("/changeDest")
-    @ApiOperation(value = "Changing destination address of parcel")
+    @Operation(summary = "Changing destination address of parcel")
     public ResponseEntity changeAdress(@RequestBody ChangeDestinationOfParcelRequestDto requestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -61,7 +61,7 @@ public class UserController{
     }
 
     @PostMapping("/cancelOrder")
-    @ApiOperation(value = "Cancelling parcel order")
+    @Operation(summary = "Cancelling parcel order")
     public ResponseEntity cancelOrder(@RequestBody CancelOrderRequestDto requestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -81,7 +81,7 @@ public class UserController{
     }
 
     @PostMapping("/viewDetails")
-    @ApiOperation(value = "View details of parcel order")
+    @Operation(summary = "View details of parcel order")
     public ResponseEntity cancelOrder(@RequestBody ViewOrderDetailsRequestDto requestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -96,7 +96,7 @@ public class UserController{
     }
 
     @GetMapping("/viewOrders")
-    @ApiOperation(value = "View all placed orders by current user")
+    @Operation(summary = "View all placed orders by current user")
     public ResponseEntity viewOrders(@RequestBody ViewOrderDetailsRequestDto requestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();

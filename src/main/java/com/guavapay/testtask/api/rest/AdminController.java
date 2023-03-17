@@ -10,8 +10,8 @@ import com.guavapay.testtask.entity.Parcel;
 import com.guavapay.testtask.entity.ParcelStatus;
 import com.guavapay.testtask.service.CourierService;
 import com.guavapay.testtask.service.ParcelService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1/admin")
-@Api(tags = {"admin"})
+@Tag(name = "admin")
 @Slf4j
 public class AdminController{
 
@@ -42,7 +42,7 @@ public class AdminController{
         return ResponseEntity.ok(couriers);
     }
     @PostMapping(path = "/setCoords")
-    @ApiOperation(value = "Set coordinates of parcel")
+    @Operation(summary = "Set coordinates of parcel")
     public ResponseEntity setCoords(@RequestBody SetCoordsOfParcelRequestDto requestDto){
         UUID parcelid = requestDto.getParcelid();
         float lat = requestDto.getLat();
@@ -58,7 +58,7 @@ public class AdminController{
         return ResponseEntity.ok("");
     }
     @PostMapping(path = "/assignToCourier")
-    @ApiOperation(value = "View all parcel orders")
+    @Operation(summary = "View all parcel orders")
     public ResponseEntity viewAll(@RequestBody AssignToCourierRequestDto requestDto){
         UUID courierid = requestDto.getCourierid();
         UUID parcelid = requestDto.getParcelid();
@@ -78,13 +78,13 @@ public class AdminController{
         return ResponseEntity.ok("");
     }
     @GetMapping(path = "/viewAll")
-    @ApiOperation(value = "View all parcel orders")
+    @Operation(summary = "View all parcel orders")
     public ResponseEntity viewAll(){
         List<Parcel> parcels = parcelService.getAllParcels();
         return ResponseEntity.ok(parcels);
     }
     @PostMapping(path = "/changeStatus")
-    @ApiOperation(value = "Change status of delivery order")
+    @Operation(summary = "Change status of delivery order")
     public ResponseEntity changeStatus(@RequestBody ChangeOrderStatusRequestDto requestDto){
         UUID id = requestDto.getId();
         ParcelStatus parcelStatus = requestDto.getStatus();
@@ -98,7 +98,7 @@ public class AdminController{
     }
 
     @PostMapping(path = "/createCourier")
-    @ApiOperation(value = "Creates courier account with provided credentials")
+    @Operation(summary = "Creates courier account with provided credentials")
     public ResponseEntity createCourier(@RequestBody CreateCourierRequestDto requestDto){
         String login = requestDto.getLogin();
         String password = requestDto.getPassword();
@@ -106,14 +106,4 @@ public class AdminController{
         courierService.createCourier(new Courier(login,passwordEncoder.encode(password)));
         return ResponseEntity.ok("");
     }
-    @GetMapping(path="/test")
-    public String another(){
-        log.info("Requested");
-        return "hello";
-    }
-
-
-
-
-
 }

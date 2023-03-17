@@ -41,11 +41,15 @@ public class SpringSecurityConfig {
             .and()
             .authorizeHttpRequests()
             .requestMatchers("/actuator/**").permitAll()
-            .requestMatchers("/api/v1/auth/**").permitAll()
             .requestMatchers("/swagger-ui/**").permitAll()
+            .requestMatchers("/api-docs/**").permitAll()
+            .requestMatchers(AuthEndpointPath+OtherEndpointsSuffix).permitAll()
             .requestMatchers(AdminEndpointPath+OtherEndpointsSuffix).hasAuthority("admin")
             .requestMatchers(CourierEndpointPath+OtherEndpointsSuffix).hasAuthority("courier")
             .requestMatchers(UserEndpointPath+OtherEndpointsSuffix).hasAuthority("user");
+//            .requestMatchers(AdminEndpointPath+OtherEndpointsSuffix).permitAll()
+//            .requestMatchers(CourierEndpointPath+OtherEndpointsSuffix).permitAll()
+//            .requestMatchers(UserEndpointPath+OtherEndpointsSuffix).permitAll();
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return  http.build();

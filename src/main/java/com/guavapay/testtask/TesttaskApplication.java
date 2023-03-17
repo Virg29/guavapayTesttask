@@ -6,6 +6,8 @@ import com.guavapay.testtask.entity.User;
 import com.guavapay.testtask.service.AdminService;
 import com.guavapay.testtask.service.CourierService;
 import com.guavapay.testtask.service.UserService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@OpenAPIDefinition(info = @Info(title = "Parcel service api", version = "1.0"))
 @SpringBootApplication
 public class TesttaskApplication {
 	@Value("${app.admin.login}")

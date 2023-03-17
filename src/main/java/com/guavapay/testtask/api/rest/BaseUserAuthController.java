@@ -8,8 +8,6 @@ import com.guavapay.testtask.security.JwtUtilities;
 import com.guavapay.testtask.service.AdminService;
 import com.guavapay.testtask.service.CourierService;
 import com.guavapay.testtask.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +20,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @RestController
 @RequestMapping(value = "/api/v1/auth")
-//@RequestMapping(value = "/")
-@Api(tags = {"admin"})
+//@Tag(name = "Auth")
 @Slf4j
 public class BaseUserAuthController {
 
@@ -46,7 +49,7 @@ public class BaseUserAuthController {
     private PasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping(path = "/login")
-    @ApiOperation(value = "Endpoint for admin logining")
+//    @Operation(summary = "Endpoint for admin logining")
     public ResponseEntity login(@RequestBody AuthRequestDto authRequestDto){
 //        log.info("{}".formatted(authUser(authRequestDto)));
         try{
@@ -79,7 +82,7 @@ public class BaseUserAuthController {
     }
 
     @PostMapping(path = "/user/register")
-    @ApiOperation(value = "User registration endpoint")
+//    @Operation(summary = "User registration endpoint")
     public ResponseEntity registerUser(@RequestBody AuthRequestDto authRequestDto){
         String login = authRequestDto.getLogin();
         BaseUser user = null;

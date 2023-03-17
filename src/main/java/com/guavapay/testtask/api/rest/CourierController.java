@@ -7,8 +7,8 @@ import com.guavapay.testtask.api.dto.ViewOrderDetailsResponseDto;
 import com.guavapay.testtask.entity.*;
 import com.guavapay.testtask.service.CourierService;
 import com.guavapay.testtask.service.ParcelService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -22,7 +22,7 @@ import java.util.UUID;
 //Can see the details of a delivery order;
 @RestController
 @RequestMapping(value = "/api/v1/courier")
-@Api(tags = {"courier"})
+@Tag(name = "courier")
 public class CourierController {
     @Autowired
     private ParcelService parcelService;
@@ -30,7 +30,7 @@ public class CourierController {
     private CourierService courierService;
 
     @PostMapping("/viewDetails")
-    @ApiOperation(value = "View details of parcel order")
+    @Operation(summary = "View details of parcel order")
     public ResponseEntity cancelOrder(@RequestBody ViewOrderDetailsRequestDto requestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -44,7 +44,7 @@ public class CourierController {
         return ResponseEntity.ok(new ViewOrderDetailsResponseDto(parcel.getStatus(), parcel.getLat(), parcel.getLng(), parcel.getCourier().getLogin()));
     }
     @PostMapping(path = "/markDelivered")
-    @ApiOperation(value = "Marks parcel delivered")
+    @Operation(summary = "Marks parcel delivered")
     public ResponseEntity markDelivered(@RequestBody MarkDeliveredRequestDto requestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -61,7 +61,7 @@ public class CourierController {
         return ResponseEntity.ok("");
     }
     @GetMapping(path = "/myOrders")
-    @ApiOperation(value = "Get all orders assigned to authorized courier")
+    @Operation(summary = "Get all orders assigned to authorized courier")
     public ResponseEntity myOrders(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
@@ -70,7 +70,7 @@ public class CourierController {
         return ResponseEntity.ok(parcels);
     }
     @PostMapping(path = "/setCoords")
-    @ApiOperation(value = "Set coordinates of parcel")
+    @Operation(summary = "Set coordinates of parcel")
     public ResponseEntity setCoords(@RequestBody SetCoordsOfParcelRequestDto requestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = authentication.getName();
