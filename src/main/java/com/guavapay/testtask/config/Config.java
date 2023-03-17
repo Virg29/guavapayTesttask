@@ -1,15 +1,9 @@
 package com.guavapay.testtask.config;
 
-import com.guavapay.testtask.security.jwt.JwtTokenProvider;
 import liquibase.integration.spring.SpringLiquibase;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -44,31 +38,6 @@ public class Config {
         liquibase.setDataSource(dataSource());
         return liquibase;
     }
-
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoderBean(){
-        return new BCryptPasswordEncoder();
-    }
-    @Bean
-    public JwtTokenProvider jwtTokenProviderBean(){
-        return new JwtTokenProvider();
-    }
-
-    @Bean
-    public CommonsRequestLoggingFilter requestLoggingFilter() {
-        CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
-        loggingFilter.setIncludeClientInfo(true);
-        loggingFilter.setIncludeQueryString(true);
-        loggingFilter.setIncludePayload(true);
-        loggingFilter.setMaxPayloadLength(64000);
-        return loggingFilter;
-    }
-    @Bean
-    @Autowired
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -76,6 +45,18 @@ public class Config {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build();
+    }
+
+    @Bean
+    public CommonsRequestLoggingFilter logFilter() {
+        CommonsRequestLoggingFilter filter
+                = new CommonsRequestLoggingFilter();
+        filter.setIncludeQueryString(true);
+        filter.setIncludePayload(true);
+        filter.setMaxPayloadLength(10000);
+        filter.setIncludeHeaders(false);
+        filter.setAfterMessagePrefix("REQUEST DATA: ");
+        return filter;
     }
 
 }

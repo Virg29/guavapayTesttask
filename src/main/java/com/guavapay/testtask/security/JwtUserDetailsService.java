@@ -1,8 +1,6 @@
 package com.guavapay.testtask.security;
 
 import com.guavapay.testtask.entity.BaseUser;
-import com.guavapay.testtask.security.jwt.JwtUser;
-import com.guavapay.testtask.security.jwt.JwtUserFactory;
 import com.guavapay.testtask.service.AdminService;
 import com.guavapay.testtask.service.CourierService;
 import com.guavapay.testtask.service.UserService;
@@ -10,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
-@Service
+
+//@Component
 public class JwtUserDetailsService implements UserDetailsService {
     @Autowired
     private UserService userService;
@@ -33,3 +31,4 @@ public class JwtUserDetailsService implements UserDetailsService {
         return jwtUser;
     }
 }
+

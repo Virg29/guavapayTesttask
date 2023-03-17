@@ -5,7 +5,7 @@ import com.guavapay.testtask.entity.Courier;
 import com.guavapay.testtask.repository.CourierRepository;
 import com.guavapay.testtask.service.CourierService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class CourierServiceImpl implements CourierService {
     @Autowired
     private CourierRepository repository;
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
     @Override
     public void deleteCourier(UUID id) {
         repository.deleteById(id);
@@ -44,6 +44,7 @@ public class CourierServiceImpl implements CourierService {
         if (existingCourier != null) {
             existingCourier.setLogin(courier.getLogin());
             existingCourier.setPassword(courier.getPassword());
+            existingCourier.setStatus(courier.getStatus());
             return repository.save(existingCourier);
         }
         return null;

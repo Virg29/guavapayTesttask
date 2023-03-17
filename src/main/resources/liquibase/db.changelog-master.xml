@@ -78,4 +78,13 @@
                                  referencedColumnNames="id"
                                  referencedTableName="couriers"/>
     </changeSet>
+
+    <changeSet author="Virg29" id="add_status_field">
+        <addColumn tableName="couriers">
+            <column name="status" type="VARCHAR(255)" defaultValue="FREE">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

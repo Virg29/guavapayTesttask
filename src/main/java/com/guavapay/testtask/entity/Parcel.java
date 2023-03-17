@@ -2,9 +2,7 @@ package com.guavapay.testtask.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
@@ -12,9 +10,12 @@ import java.util.UUID;
 @Entity
 @Table(name = "parcels")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class Parcel {
+    public Parcel(String daddress) {
+        this.daddress = daddress;
+    }
 
     @Id
     @GeneratedValue

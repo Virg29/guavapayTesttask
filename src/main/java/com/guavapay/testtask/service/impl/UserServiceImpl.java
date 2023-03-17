@@ -6,7 +6,7 @@ import com.guavapay.testtask.entity.User;
 import com.guavapay.testtask.repository.UserRepository;
 import com.guavapay.testtask.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository repository;
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void deleteUser(UUID id) {

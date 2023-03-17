@@ -1,9 +1,10 @@
 package com.guavapay.testtask.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "couriers")
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 //@RequiredArgsConstructor
 //@AllArgsConstructor
 public class Courier extends BaseUser {
+    @Enumerated(EnumType.STRING)
+    private CourierStatus status;
     public Courier() {
     }
 

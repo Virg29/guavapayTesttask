@@ -1,6 +1,8 @@
 package com.guavapay.testtask.service.impl;
 
+import com.guavapay.testtask.entity.Courier;
 import com.guavapay.testtask.entity.Parcel;
+import com.guavapay.testtask.entity.User;
 import com.guavapay.testtask.repository.ParcelRepository;
 import com.guavapay.testtask.service.ParcelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,24 @@ public class ParcelServiceImpl implements ParcelService {
     }
 
     @Override
+    public List<Parcel> getAllParcelsByCourier(Courier courier) {
+        return this.getAllParcels().stream().filter(parcel -> {
+            if(parcel.getCourier().getLogin().equals(courier.getLogin())) return true;
+            return false;
+        }).toList();
+    }
+
+    @Override
     public List<Parcel> getAllParcels() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<Parcel> getAllParcelsByUser(User user) {
+        return this.getAllParcels().stream().filter(parcel -> {
+            if(parcel.getUser().getLogin().equals(user.getLogin())) return true;
+            return false;
+        }).toList();
     }
 
     @Override

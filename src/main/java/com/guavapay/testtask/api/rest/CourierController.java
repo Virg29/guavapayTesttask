@@ -1,30 +1,95 @@
 package com.guavapay.testtask.api.rest;
 
-import com.guavapay.testtask.api.dto.AuthRequestDto;
-import com.guavapay.testtask.security.jwt.JwtTokenProvider;
+import com.guavapay.testtask.api.dto.MarkDeliveredRequestDto;
+import com.guavapay.testtask.api.dto.SetCoordsOfParcelRequestDto;
+import com.guavapay.testtask.api.dto.ViewOrderDetailsRequestDto;
+import com.guavapay.testtask.api.dto.ViewOrderDetailsResponseDto;
+import com.guavapay.testtask.entity.*;
 import com.guavapay.testtask.service.CourierService;
+import com.guavapay.testtask.service.ParcelService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
+
+//Can see the details of a delivery order;
 @RestController
 @RequestMapping(value = "/api/v1/courier")
 @Api(tags = {"courier"})
-public class CourierController extends BaseUserAuthController{
+public class CourierController {
+    @Autowired
+    private ParcelService parcelService;
     @Autowired
     private CourierService courierService;
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
-    @PostMapping(path = "/login")
-    public ResponseEntity login(@RequestBody AuthRequestDto authRequestDto){
-        return ResponseEntity.ok(authUser(authRequestDto,courierService,authenticationManager,jwtTokenProvider));
+    @PostMapping("/viewDetails")
+    @ApiOperation(value = "View details of parcel order")
+    public ResponseEntity cancelOrder(@RequestBody ViewOrderDetailsRequestDto requestDto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        Courier currentUser = (Courier) courierService.getBaseUserByLogin(login);
+
+        Parcel parcel = parcelService.getParcelById(requestDto.getId());
+
+        if(parcel == null) return ResponseEntity.badRequest().body("Parcel with provided id not found");
+        if(!parcel.getCourier().equals(currentUser.getLogin())) return ResponseEntity.badRequest().body("Its not your parcel");
+
+        return ResponseEntity.ok(new ViewOrderDetailsResponseDto(parcel.getStatus(), parcel.getLat(), parcel.getLng(), parcel.getCourier().getLogin()));
     }
+    @PostMapping(path = "/markDelivered")
+    @ApiOperation(value = "Marks parcel delivered")
+    public ResponseEntity markDelivered(@RequestBody MarkDeliveredRequestDto requestDto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        Courier currentCourier = (Courier) courierService.getBaseUserByLogin(login);
+
+        UUID parcelid = requestDto.getParcelid();
+        Parcel parcel = parcelService.getParcelById(parcelid);
+        if(!parcel.getCourier().getLogin().equals(currentCourier.getLogin())) return ResponseEntity.badRequest().body("It's not your order.");
+        parcel.setStatus(ParcelStatus.DELIVERED);
+        parcelService.updateParcel(parcelid,parcel);
+
+        currentCourier.setStatus(CourierStatus.FREE);
+        courierService.updateCourier(currentCourier.getId(),currentCourier);
+        return ResponseEntity.ok("");
+    }
+    @GetMapping(path = "/myOrders")
+    @ApiOperation(value = "Get all orders assigned to authorized courier")
+    public ResponseEntity myOrders(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        Courier currentCourier = (Courier) courierService.getBaseUserByLogin(login);
+        List<Parcel> parcels = parcelService.getAllParcelsByCourier(currentCourier);
+        return ResponseEntity.ok(parcels);
+    }
+    @PostMapping(path = "/setCoords")
+    @ApiOperation(value = "Set coordinates of parcel")
+    public ResponseEntity setCoords(@RequestBody SetCoordsOfParcelRequestDto requestDto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String login = authentication.getName();
+        Courier currentCourier = (Courier) courierService.getBaseUserByLogin(login);
+
+        UUID parcelid = requestDto.getParcelid();
+        float lat = requestDto.getLat();
+        float lng = requestDto.getLng();
+
+        Parcel parcel = parcelService.getParcelById(parcelid);
+        if(parcel == null) return ResponseEntity.badRequest().body("Parcel not found");
+        if(!parcel.getCourier().getLogin().equals(currentCourier.getLogin())) return ResponseEntity.badRequest().body("It's not your order.");
+
+        parcel.setLat(lat);
+        parcel.setLng(lng);
+
+        parcelService.updateParcel(parcelid,parcel);
+        return ResponseEntity.ok("");
+    }
+
+
 }
